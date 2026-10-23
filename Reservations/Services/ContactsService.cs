@@ -16,5 +16,10 @@ namespace Reservations.Services
         {
             return _contactsRepository.GetAll();
         }
+
+        public void AddPerson(Person newPerson)
+        {
+            _contactsRepository.AddPerson(newPerson);
+        }
     }
 }

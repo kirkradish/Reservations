@@ -43,5 +43,32 @@ namespace Reservations.Repositories
 
             return contacts;
         }
+
+        public void AddPerson(Person newPerson)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                using (var command = new SqlCommand("SP_AddContact", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    
+                    command.Parameters.AddWithValue("@firstName", newPerson.FirstName);
+                    command.Parameters.AddWithValue("@middleName", newPerson.MiddleName);
+                    command.Parameters.AddWithValue("lastName", newPerson.LastName);
+
+                    try
+                    {
+                        connection.Open();
+
+                        int rowsAffected = command.ExecuteNonQuery();
+                        Console.WriteLine($"{rowsAffected} row(s) successfully inserted");
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine($"Database error: {ex.Message}");
+                    }
+                }
+            }
+        }
     }
 }

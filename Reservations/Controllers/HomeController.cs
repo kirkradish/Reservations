@@ -38,5 +38,21 @@ namespace Reservations.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpPost]
+        public IActionResult AddPerson(Person newPerson)
+        {
+            string firstName = newPerson.FirstName;
+            string? middleName = newPerson.MiddleName;
+            string lastName = newPerson.LastName;
+
+            if (ModelState.IsValid)
+            {
+                _contactsService.AddPerson(newPerson);
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }
