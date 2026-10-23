@@ -4,6 +4,8 @@ namespace Reservations.Services
 {
     public interface IContactsService
     {
-        IEnumerable<Person> GetAllContacts();
+        public IEnumerable<Person> GetAllContacts();
+
+        public void AddPerson(Person person);
     }
 }

@@ -4,6 +4,7 @@ namespace Reservations.Repositories
 {
     public interface IContactsRepository
     {
-        IEnumerable<Person> GetAll();
+        public IEnumerable<Person> GetAll();
+        public void AddPerson(Person person);
     }
 }
