@@ -1,0 +1,40 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var newPerson = new Reservations.Models.NewPersonViewModel();
+}
+@model List<Reservations.Models.Person>
+
+<div class="text-center">
+    <h1 class="display-4">Contacts List</h1>
+
+    @foreach (var person in Model)
+    {
+        <p>
+            <a asp-controller="Contact" asp-action="Index" asp-route-id="@person.id">@person.FirstName @person.MiddleName @person.LastName</a>
+        </p>
+    }
+
+    <form method="post" asp-action="AddPerson">
+        <div>
+            <label asp-for="@newPerson.FirstName">First Name</label>
+            <input aps-for="@newPerson.FirstName" class="form-control" name="FirstName" />
+            <span asp-validation-for="@newPerson.FirstName" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="@newPerson.MiddleName">First Name</label>
+            <input aps-for="@newPerson.MiddleName" class="form-control" name="MiddleName" />
+            <span asp-validation-for="@newPerson.MiddleName" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="@newPerson.LastName">First Name</label>
+            <input aps-for="@newPerson.LastName" class="form-control" name="LastName" />
+            <span asp-validation-for="@newPerson.LastName" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">Add Contact</button>
+    </form>
+</div>
