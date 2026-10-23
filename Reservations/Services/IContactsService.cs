@@ -6,6 +6,8 @@ namespace Reservations.Services
     {
         public IEnumerable<Person> GetAllContacts();
 
+        public Person GetContactById(int id);
+
         public void AddPerson(Person person);
     }
 }
