@@ -16,7 +16,15 @@ namespace Reservations.Controllers
         public IActionResult Index(int id)
         {
             Person idPerson = _contactsService.GetContactById(id);
+
             return View(idPerson);
+        }
+
+        [HttpPost]
+        public IActionResult EditContact(Person EditedPerson)
+        {
+            _contactsService.EditContact(EditedPerson);
+            return RedirectToAction("Index", new { id = EditedPerson.Id});
         }
     }
 }

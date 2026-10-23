@@ -9,5 +9,7 @@ namespace Reservations.Services
         public Person GetContactById(int id);
 
         public void AddPerson(Person person);
+
+        public void EditContact(Person person);
     }
 }

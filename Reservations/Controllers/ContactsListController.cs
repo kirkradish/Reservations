@@ -30,10 +30,6 @@ namespace Reservations.Controllers
         [HttpPost]
         public IActionResult AddPerson(Person newPerson)
         {
-            string firstName = newPerson.FirstName;
-            string? middleName = newPerson.MiddleName;
-            string lastName = newPerson.LastName;
-
             if (ModelState.IsValid)
             {
                 _contactsService.AddPerson(newPerson);
