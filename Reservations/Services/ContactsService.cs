@@ -26,5 +26,10 @@ namespace Reservations.Services
         {
             _contactsRepository.AddPerson(newPerson);
         }
+
+        public void EditContact(Person editedPerson)
+        {
+            _contactsRepository.EditContact(editedPerson);
+        }
     }
 }

@@ -12,7 +12,7 @@
     @foreach (var person in Model)
     {
         <p>
-            <a asp-controller="Contact" asp-action="Index" asp-route-id="@person.id">@person.FirstName @person.MiddleName @person.LastName</a>
+            <a asp-controller="Contact" asp-action="Index" asp-route-id="@person.Id">@person.FirstName @person.MiddleName @person.LastName</a>
         </p>
     }
 
