@@ -6,35 +6,77 @@
 }
 @model List<Reservations.Models.Person>
 
+@section Styles {
+    <link href="https://cdn.datatables.net/v/dt/dt-3.1.4/datatables.min.css" rel="stylesheet">
+}
+
 <div class="text-center">
     <h1 class="display-4">Contacts List</h1>
 
-    @foreach (var person in Model)
-    {
-        <p>
-            <a asp-controller="Contact" asp-action="Index" asp-route-id="@person.Id">@person.FirstName @person.MiddleName @person.LastName</a>
-        </p>
-    }
 
-    <form method="post" asp-action="AddPerson">
-        <div>
-            <label asp-for="@newPerson.FirstName">First Name</label>
-            <input aps-for="@newPerson.FirstName" class="form-control" name="FirstName" />
-            <span asp-validation-for="@newPerson.FirstName" class="text-danger"></span>
+    <table id="contactsTable" class="table table-striped table-bordered" style="width: 100%">
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>First Name</th>
+                <th>Middle Name</th>
+                <th>Last Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var person in Model)
+            {
+                <tr>
+                    <td><a asp-controller="Contact" asp-action="Index" asp-route-id="@person.Id">View</a></td>
+                    <td>@person.FirstName</td>
+                    <td>@person.MiddleName</td>
+                    <td>@person.LastName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <section class="card">
+        <div class="card-body">
+            <h4 class="card-title">Add Contact</h4>
+            <form method="post" asp-action="AddPerson">
+                <div>
+                    <label asp-for="@newPerson.FirstName">First Name</label>
+                    <input aps-for="@newPerson.FirstName" class="form-control" name="FirstName" />
+                    <span asp-validation-for="@newPerson.FirstName" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="@newPerson.MiddleName">First Name</label>
+                    <input aps-for="@newPerson.MiddleName" class="form-control" name="MiddleName" />
+                    <span asp-validation-for="@newPerson.MiddleName" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="@newPerson.LastName">First Name</label>
+                    <input aps-for="@newPerson.LastName" class="form-control" name="LastName" />
+                    <span asp-validation-for="@newPerson.LastName" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success">Add Contact</button>
+            </form>
         </div>
-
-        <div>
-            <label asp-for="@newPerson.MiddleName">First Name</label>
-            <input aps-for="@newPerson.MiddleName" class="form-control" name="MiddleName" />
-            <span asp-validation-for="@newPerson.MiddleName" class="text-danger"></span>
-        </div>
-
-        <div>
-            <label asp-for="@newPerson.LastName">First Name</label>
-            <input aps-for="@newPerson.LastName" class="form-control" name="LastName" />
-            <span asp-validation-for="@newPerson.LastName" class="text-danger"></span>
-        </div>
-
-        <button type="submit" class="btn btn-success">Add Contact</button>
-    </form>
+    </section>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/v/dt/dt-3.1.4/datatables.min.js" ></script>
+    <script>
+        $(document).ready(function () {
+            // Initialize the DataTable targeting your table ID
+            $('#contactsTable').DataTable({
+                "paging": true,
+                "ordering": true,
+                "info": true,
+                "searching": true,
+                "pageLength": 10 // Default row display limit
+            });
+        });
+    </script>
+}
