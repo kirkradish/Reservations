@@ -28,7 +28,7 @@ namespace Reservations.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddPerson(Person newPerson)
+        public IActionResult AddContact(Person newPerson)
         {
             if (ModelState.IsValid)
             {
