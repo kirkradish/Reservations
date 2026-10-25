@@ -21,10 +21,19 @@ namespace Reservations.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditContact(Person EditedPerson)
+        public IActionResult EditContact(NewPersonViewModel editedModel)
         {
-            _contactsService.EditContact(EditedPerson);
-            return RedirectToAction("Index", new { id = EditedPerson.Id});
+            Person domainPerson = new Person
+            {
+                Id = Convert.ToInt32(editedModel.Id),
+                FirstName = editedModel.FirstName,
+                MiddleName = editedModel.MiddleName,
+                LastName = editedModel.LastName
+            };
+
+            _contactsService.EditContact(domainPerson);
+
+            return RedirectToAction("Index", new { id = domainPerson.Id });
         }
     }
 }

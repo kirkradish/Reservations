@@ -120,7 +120,7 @@ namespace Reservations.Repositories
 
                     command.Parameters.AddWithValue("@id", person.Id);
                     command.Parameters.AddWithValue("@firstName", person.FirstName);
-                    command.Parameters.AddWithValue("@middleName", person.MiddleName);
+                    command.Parameters.AddWithValue("@middleName", person.MiddleName ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@lastName", person.LastName);
 
                     try

@@ -2,34 +2,32 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    var newPerson = new Reservations.Models.NewPersonViewModel();
-
     string mode = ViewBag.FormType;
     string targetAction = (mode == "AddContact") ? "AddContact" : "EditContact";
     string targetController = (mode == "AddContact") ? "ContactsList" : "Contact";
-    bool isEdit = (mode == "EditContact") ? true : false;
 }
+@model Reservations.Models.NewPersonViewModel
 
-<form method="post" asp-controller="ContactsList" asp-action="@targetAction">
+<form method="post" asp-controller="@targetController" asp-action="@targetAction">
     <div>
-        <input type="hidden" name="id" value="@newPerson.Id" />
+        <input type="hidden" asp-for="Id" />
     </div>
     <div>
-        <label asp-for="@newPerson.FirstName">First Name</label>
-        <input asp-for="@newPerson.FirstName" class="form-control" name="FirstName" value="@(isEdit ? newPerson?.FirstName: "")" />
-        <span asp-validation-for="@newPerson.FirstName" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label asp-for="@newPerson.MiddleName">First Name</label>
-        <input asp-for="@newPerson.MiddleName" class="form-control" name="MiddleName" value="@(isEdit ? newPerson?.MiddleName : "")" />
-        <span asp-validation-for="@newPerson.MiddleName" class="text-danger"></span>
+        <label asp-for="FirstName">First Name</label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
     </div>
 
     <div>
-        <label asp-for="@newPerson.LastName">First Name</label>
-        <input asp-for="@newPerson.LastName" class="form-control" name="LastName" value="@(isEdit ? newPerson?.LastName : "")" />
-        <span asp-validation-for="@newPerson.LastName" class="text-danger"></span>
+        <label asp-for="MiddleName">Middle Name</label>
+        <input asp-for="MiddleName" class="form-control" />
+        <span asp-validation-for="MiddleName" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="LastName">Last Name</label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-success">Add Contact</button>

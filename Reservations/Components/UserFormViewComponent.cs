@@ -1,19 +1,52 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Reservations.Models;
+using Reservations.Services;
 using System.Threading.Tasks;
 
 namespace Reservations.Components
 {
     public class UserFormViewComponent : ViewComponent
     {
-        public UserFormViewComponent()
-        {
+        IContactsService _contactService;
 
+        public UserFormViewComponent(IContactsService contactService)
+        {
+            _contactService = contactService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string formType)
+        public async Task<IViewComponentResult> InvokeAsync(int? id, string formType)
         {
+            NewPersonViewModel model = new NewPersonViewModel();
+
             ViewBag.FormType = formType;
-            return View();
+
+            if (formType == "EditContact" && id.HasValue)
+            {
+                Person person = _contactService.GetContactById(id.Value);
+
+                if (person != null)
+                {
+                    model = new NewPersonViewModel
+                    {
+                        Id = person.Id,
+                        FirstName = person.FirstName,
+                        MiddleName = person.MiddleName,
+                        LastName = person.LastName
+                    };
+                }
+                else
+                {
+                    model = new NewPersonViewModel
+                    {
+                        Id = 0,
+                        FirstName = "",
+                        MiddleName = "",
+                        LastName = ""
+                    };
+                }
+            }
+
+            return View(model);
         }
     }
 }
