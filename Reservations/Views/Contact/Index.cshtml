@@ -2,14 +2,16 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    var idPerson = new Reservations.Models.NewPersonViewModel();
+    
 }
 @model Reservations.Models.Person;
 
 <div class="text-center">
     <h1>Contact</h1>
     <p>@Model.FirstName @Model.MiddleName @Model.LastName</p>
-    <button type="button" id="btnShowForm" class="btn btn-primary">Edit</button>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#contactDetailsModal">
+        Edit Contact
+    </button>
 </div>
 
 <div>
@@ -17,46 +19,19 @@
     <p>Past Reservation</p>
 </div>
 
-<div id="formContainer" style="display: none;">
-    <h3>Edit Contact</h3>
-    <form method="post" asp-action="EditContact">
-        <div>
-            <input type="hidden" name="id" value="@Model.Id" />
-        </div>
-        <div>
-            <label asp-for="@idPerson.FirstName">First Name</label>
-            <input aps-for="@idPerson.FirstName" class="form-control" name="FirstName" value="@Model.FirstName" />
-            <span asp-validation-for="@idPerson.FirstName" class="text-danger"></span>
-        </div>
+<!-- EDIT CONTACT MODAL -->
+<div class="modal fade" id="contactDetailsModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
 
-        <div>
-            <label asp-for="@idPerson.MiddleName">First Name</label>
-            <input aps-for="@idPerson.MiddleName" class="form-control" name="MiddleName" value="@Model.MiddleName" />
-            <span asp-validation-for="@idPerson.MiddleName" class="text-danger"></span>
-        </div>
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Add Contact</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
-        <div>
-            <label asp-for="@idPerson.LastName">First Name</label>
-            <input aps-for="@idPerson.LastName" class="form-control" name="LastName" value="@Model.LastName" />
-            <span asp-validation-for="@idPerson.LastName" class="text-danger"></span>
+            <div class="modal-body">
+                @await Component.InvokeAsync("UserForm", new { id = @Model.Id, formType = "EditContact" })
+            </div>
         </div>
-
-        <button type="submit" class="btn btn-success">Edit Contact</button>
-    </form>
+    </div>
 </div>
-
-@section Scripts {
-    <script>
-        document.getElementById("btnShowForm").addEventListener("click", function() {
-            var formDiv = document.getElementById("formContainer");
-
-            if (formDiv.style.display === "none") {
-                formDiv.style.display = "block";
-                this.innerText = "Hide Form";
-            } else {
-                formDiv.style.display = "none";
-                this.innerText = "Edit Contact";
-            }
-        });
-    </script>
-}
