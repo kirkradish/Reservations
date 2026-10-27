@@ -31,7 +31,8 @@ namespace Reservations.Components
                         Id = person.Id,
                         FirstName = person.FirstName,
                         MiddleName = person.MiddleName,
-                        LastName = person.LastName
+                        LastName = person.LastName,
+                        Email = person.Email
                     };
                 }
                 else
@@ -41,7 +42,8 @@ namespace Reservations.Components
                         Id = 0,
                         FirstName = "",
                         MiddleName = "",
-                        LastName = ""
+                        LastName = "",
+                        Email = ""
                     };
                 }
             }
