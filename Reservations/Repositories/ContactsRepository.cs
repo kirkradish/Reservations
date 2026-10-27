@@ -33,10 +33,11 @@ namespace Reservations.Repositories
                         {
                             contacts.Add(new Person
                             {
-                                Id = reader.GetInt32("id"),
+                                Id = reader.GetInt32("user_id"),
                                 FirstName = reader["first_name"].ToString(),
                                 MiddleName = reader["middle_name"].ToString(),
-                                LastName = reader["last_name"].ToString()
+                                LastName = reader["last_name"].ToString(),
+                                Email = reader["email"].ToString()
                             });
                         }
                     }
@@ -56,7 +57,8 @@ namespace Reservations.Repositories
                     
                     command.Parameters.AddWithValue("@firstName", newPerson.FirstName);
                     command.Parameters.AddWithValue("@middleName", string.IsNullOrEmpty(newPerson.MiddleName) ? (object)DBNull.Value : newPerson.MiddleName);
-                    command.Parameters.AddWithValue("lastName", newPerson.LastName);
+                    command.Parameters.AddWithValue("@lastName", newPerson.LastName);
+                    command.Parameters.AddWithValue("@email", newPerson.Email);
 
                     try
                     {
@@ -91,10 +93,11 @@ namespace Reservations.Repositories
                         {
                             return new Person
                             {
-                                Id = reader.GetInt32("id"),
+                                Id = reader.GetInt32("user_id"),
                                 FirstName = reader["first_name"].ToString(),
                                 MiddleName = reader["middle_name"].ToString(),
-                                LastName = reader["last_name"].ToString()
+                                LastName = reader["last_name"].ToString(),
+                                Email = reader["email"].ToString()
                             };
                         }
                     }
@@ -106,7 +109,8 @@ namespace Reservations.Repositories
                 Id = 0,
                 FirstName = "",
                 MiddleName = "",
-                LastName = ""
+                LastName = "",
+                Email = ""
             };
         }
 
@@ -122,6 +126,7 @@ namespace Reservations.Repositories
                     command.Parameters.AddWithValue("@firstName", person.FirstName);
                     command.Parameters.AddWithValue("@middleName", person.MiddleName ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@lastName", person.LastName);
+                    command.Parameters.AddWithValue("@email", person.Email);
 
                     try
                     {

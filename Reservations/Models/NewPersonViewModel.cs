@@ -13,5 +13,8 @@ namespace Reservations.Models
 
         [Required(ErrorMessage = "Last name is required")]
         public string LastName { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Email name is required")]
+        public string Email { get; set; } = string.Empty;
     }
 }

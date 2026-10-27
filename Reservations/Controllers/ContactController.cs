@@ -25,10 +25,12 @@ namespace Reservations.Controllers
         {
             Person domainPerson = new Person
             {
+
                 Id = Convert.ToInt32(editedModel.Id),
                 FirstName = editedModel.FirstName,
                 MiddleName = editedModel.MiddleName,
-                LastName = editedModel.LastName
+                LastName = editedModel.LastName,
+                Email = editedModel.Email
             };
 
             _contactsService.EditContact(domainPerson);
