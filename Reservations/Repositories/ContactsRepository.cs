@@ -21,7 +21,7 @@ namespace Reservations.Repositories
 
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var command = new SqlCommand("SP_GetAllContacts", connection))
+                using (var command = new SqlCommand("sp_get_all_contacts", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -52,7 +52,7 @@ namespace Reservations.Repositories
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var command = new SqlCommand("SP_AddContact", connection))
+                using (var command = new SqlCommand("sp_add_contact", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     
@@ -81,7 +81,7 @@ namespace Reservations.Repositories
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var command = new SqlCommand("SP_GetContactById", connection))
+                using (var command = new SqlCommand("sp_get_contact_by_id", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -122,7 +122,7 @@ namespace Reservations.Repositories
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var command = new SqlCommand("SP_EditContact", connection))
+                using (var command = new SqlCommand("sp_edit_contact", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
