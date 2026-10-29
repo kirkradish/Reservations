@@ -37,7 +37,8 @@ namespace Reservations.Repositories
                                 FirstName = reader["first_name"].ToString(),
                                 MiddleName = reader["middle_name"].ToString(),
                                 LastName = reader["last_name"].ToString(),
-                                Email = reader["email"].ToString()
+                                Email = reader["email"].ToString(),
+                                PhoneNumber = reader["phone_number"].ToString()
                             });
                         }
                     }
@@ -59,6 +60,7 @@ namespace Reservations.Repositories
                     command.Parameters.AddWithValue("@middleName", string.IsNullOrEmpty(newPerson.MiddleName) ? (object)DBNull.Value : newPerson.MiddleName);
                     command.Parameters.AddWithValue("@lastName", newPerson.LastName);
                     command.Parameters.AddWithValue("@email", newPerson.Email);
+                    command.Parameters.AddWithValue("@phoneNumber", newPerson.PhoneNumber);
 
                     try
                     {
@@ -97,7 +99,8 @@ namespace Reservations.Repositories
                                 FirstName = reader["first_name"].ToString(),
                                 MiddleName = reader["middle_name"].ToString(),
                                 LastName = reader["last_name"].ToString(),
-                                Email = reader["email"].ToString()
+                                Email = reader["email"].ToString(),
+                                PhoneNumber = reader["phone_number"].ToString()
                             };
                         }
                     }
@@ -110,7 +113,8 @@ namespace Reservations.Repositories
                 FirstName = "",
                 MiddleName = "",
                 LastName = "",
-                Email = ""
+                Email = "",
+                PhoneNumber = ""
             };
         }
 
@@ -127,6 +131,7 @@ namespace Reservations.Repositories
                     command.Parameters.AddWithValue("@middleName", person.MiddleName ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@lastName", person.LastName);
                     command.Parameters.AddWithValue("@email", person.Email);
+                    command.Parameters.AddWithValue("@phoneNumber", person.PhoneNumber);
 
                     try
                     {
