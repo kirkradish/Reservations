@@ -30,7 +30,8 @@ namespace Reservations.Controllers
                 FirstName = editedModel.FirstName,
                 MiddleName = editedModel.MiddleName,
                 LastName = editedModel.LastName,
-                Email = editedModel.Email
+                Email = editedModel.Email,
+                PhoneNumber = editedModel.PhoneNumber
             };
 
             _contactsService.EditContact(domainPerson);

@@ -32,7 +32,8 @@ namespace Reservations.Components
                         FirstName = person.FirstName,
                         MiddleName = person.MiddleName,
                         LastName = person.LastName,
-                        Email = person.Email
+                        Email = person.Email,
+                        PhoneNumber = person.PhoneNumber,
                     };
                 }
                 else
@@ -43,7 +44,8 @@ namespace Reservations.Components
                         FirstName = "",
                         MiddleName = "",
                         LastName = "",
-                        Email = ""
+                        Email = "",
+                        PhoneNumber = ""
                     };
                 }
             }
