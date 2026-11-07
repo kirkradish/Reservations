@@ -31,5 +31,10 @@ namespace Reservations.Services
         {
             await _contactsRepository.EditContactAsync(editedPerson);
         }
+
+        public async Task DeleteContactAsync(int id)
+        {
+            await _contactsRepository.DeleteContactAsync(id);
+        }
     }
 }

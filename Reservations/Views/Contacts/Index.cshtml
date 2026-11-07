@@ -22,6 +22,7 @@
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -34,6 +35,7 @@
                     <td>@person.LastName</td>
                     <td>@person.Email</td>
                     <td>@person.PhoneNumber</td>
+                    <td><a asp-controller="Contacts" asp-action="DeleteContact" asp-route-id="@person.Id">Delete</a></td>
                 </tr>
             }
         </tbody>

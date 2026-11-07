@@ -11,5 +11,7 @@ namespace Reservations.Services
         public Task AddPersonAsync(Person person);
 
         public Task EditContactAync(Person person);
+
+        public Task DeleteContactAsync(int id);
     }
 }
