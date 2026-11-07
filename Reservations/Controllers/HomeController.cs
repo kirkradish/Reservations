@@ -16,16 +16,7 @@ namespace Reservations.Controllers
 
         public IActionResult Index()
         {
-            try
-            {
-                var data = _contactsService.GetAllContacts();
-                return View(data);
-            }
-            catch (Exception ex)
-            {
-                ViewBag.ErrorMessage = "Could not load contacts: " + ex.Message;
-                return View(new List<Reservations.Models.Person>());
-            }
+            return View();
         }
 
         public IActionResult Privacy()

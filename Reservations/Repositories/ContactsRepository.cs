@@ -15,7 +15,7 @@ namespace Reservations.Repositories
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
-        public IEnumerable<Person> GetAll()
+        public async Task<IEnumerable<Person>> GetAllAsync()
         {
             var contacts = new List<Person>();
 
@@ -25,20 +25,32 @@ namespace Reservations.Repositories
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
-                    connection.Open();
+                    await connection.OpenAsync();
 
                     using (var reader = command.ExecuteReader())
                     {
-                        while (reader.Read())
+                        while (await reader.ReadAsync())
                         {
                             contacts.Add(new Person
                             {
-                                Id = reader.GetInt32("user_id"),
-                                FirstName = reader["first_name"].ToString(),
-                                MiddleName = reader["middle_name"].ToString(),
-                                LastName = reader["last_name"].ToString(),
-                                Email = reader["email"].ToString(),
-                                PhoneNumber = reader["phone_number"].ToString()
+                                Id = await reader.IsDBNullAsync(reader.GetOrdinal("user_id"))
+                                    ? null
+                                    : reader.GetInt32(reader.GetOrdinal("user_id")),
+                                FirstName = await reader.IsDBNullAsync(reader.GetOrdinal("first_name"))
+                                    ? null
+                                    : reader.GetString(reader.GetOrdinal("first_name")),
+                                MiddleName = await reader.IsDBNullAsync(reader.GetOrdinal("middle_name"))
+                                    ? null
+                                    : reader.GetString(reader.GetOrdinal("middle_name")),
+                                LastName = await reader.IsDBNullAsync(reader.GetOrdinal("last_name"))
+                                    ? null
+                                    : reader.GetString(reader.GetOrdinal("last_name")),
+                                Email = await reader.IsDBNullAsync(reader.GetOrdinal("email"))
+                                    ? null
+                                    : reader.GetString(reader.GetOrdinal("email")),
+                                PhoneNumber = await reader.IsDBNullAsync(reader.GetOrdinal("phone_number"))
+                                    ? null
+                                    : reader.GetString(reader.GetOrdinal("phone_number"))
                             });
                         }
                     }
@@ -48,7 +60,7 @@ namespace Reservations.Repositories
             return contacts;
         }
 
-        public void AddPerson(Person newPerson)
+        public async Task AddPersonAsync(Person newPerson)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -64,9 +76,9 @@ namespace Reservations.Repositories
 
                     try
                     {
-                        connection.Open();
+                        await connection.OpenAsync();
 
-                        int rowsAffected = command.ExecuteNonQuery();
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
                         Console.WriteLine($"{rowsAffected} row(s) successfully inserted");
                     }
                     catch (SqlException ex)
@@ -77,7 +89,7 @@ namespace Reservations.Repositories
             }
         }
 
-        public Person GetContactById(int id)
+        public async Task<Person> GetContactByIdAsync(int id)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -87,20 +99,32 @@ namespace Reservations.Repositories
 
                     command.Parameters.AddWithValue("@id", id);
 
-                    connection.Open();
+                    await connection.OpenAsync();
 
                     using (var reader = command.ExecuteReader())
                     {
-                        while (reader.Read())
+                        while (await reader.ReadAsync())
                         {
                             return new Person
                             {
-                                Id = reader.GetInt32("user_id"),
-                                FirstName = reader["first_name"].ToString(),
-                                MiddleName = reader["middle_name"].ToString(),
-                                LastName = reader["last_name"].ToString(),
-                                Email = reader["email"].ToString(),
-                                PhoneNumber = reader["phone_number"].ToString()
+                                Id = await reader.IsDBNullAsync(reader.GetOrdinal("user_id"))
+                                    ? null
+                                    : reader.GetInt32(reader.GetOrdinal("user_id")),
+                                FirstName = await reader.IsDBNullAsync(reader.GetOrdinal("first_name"))
+                                    ? null 
+                                    : reader.GetString(reader.GetOrdinal("first_name")),
+                                MiddleName = await reader.IsDBNullAsync(reader.GetOrdinal("middle_name"))
+                                    ? null
+                                    : reader.GetString(reader.GetOrdinal("middle_name")),
+                                LastName = await reader.IsDBNullAsync(reader.GetOrdinal("last_name"))
+                                    ? null
+                                    : reader.GetString(reader.GetOrdinal("last_name")),
+                                Email = await reader.IsDBNullAsync(reader.GetOrdinal("email"))
+                                    ? null
+                                    : reader.GetString(reader.GetOrdinal("email")),
+                                PhoneNumber = await reader.IsDBNullAsync(reader.GetOrdinal("phone_number"))
+                                    ? null
+                                    : reader.GetString(reader.GetOrdinal("phone_number"))
                             };
                         }
                     }
@@ -118,7 +142,7 @@ namespace Reservations.Repositories
             };
         }
 
-        public void EditContact(Person person)
+        public async Task EditContactAsync(Person person)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -135,8 +159,8 @@ namespace Reservations.Repositories
 
                     try
                     {
-                        connection.Open();
-                        int rowsAffected = command.ExecuteNonQuery();
+                        await connection.OpenAsync();
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
                         Console.WriteLine($"{rowsAffected} row(s) successfully inserted");
                     }
                     catch (Exception ex)

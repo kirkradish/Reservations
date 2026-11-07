@@ -1,7 +1,7 @@
 ﻿@model Reservations.Models.NewPersonViewModel
 
 @{
-    string mode = ViewBag.FormType?.ToString() ?? "AddContact";
+    string mode = ViewData["FormType"]?.ToString() ?? "AddContact";
     string targetAction = (mode == "AddContact") ? "AddContact" : "EditContact";
     string buttonText = (mode == "AddContact") ? "Add Contact" : "Edit Contact";
 }
