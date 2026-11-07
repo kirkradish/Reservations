@@ -170,5 +170,28 @@ namespace Reservations.Repositories
                 }
             }
         }
+
+        public async Task DeleteContactAsync(int id)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                using (var command = new SqlCommand("sp_soft_delete_contact", connection))
+                {
+                    try
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@id", id);
+
+                        await connection.OpenAsync();
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Database error: {ex.Message}");
+                    }
+                }
+            }
+        }
     }
 }

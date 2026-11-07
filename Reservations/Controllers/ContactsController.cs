@@ -63,9 +63,19 @@ namespace Reservations.Controllers
             if (ModelState.IsValid)
             {
                 await _contactsService.AddPersonAsync(newPerson);
-                return RedirectToAction("Index");
             }
 
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> DeleteContact(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest("A valid contact ID must be provided.");
+            }
+
+            await _contactsService.DeleteContactAsync(id);
             return RedirectToAction("Index");
         }
     }

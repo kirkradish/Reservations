@@ -11,5 +11,7 @@ namespace Reservations.Repositories
         public Task AddPersonAsync(Person person);
 
         public Task EditContactAsync(Person person);
+
+        public Task DeleteContactAsync(int id);
     }
 }
