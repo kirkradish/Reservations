@@ -2,12 +2,11 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    
 }
 @model Reservations.Models.Person;
 
 <div class="text-center">
-    <h1>Contact</h1>
+    <h1>View Contact</h1>
     <p>Hello @Model.FirstName @Model.MiddleName @Model.LastName</p>
     <p>@Model.Email</p>
     <p>@Model.PhoneNumber</p>
@@ -32,7 +31,21 @@
             </div>
 
             <div class="modal-body">
-                @await Component.InvokeAsync("UserForm", new { id = @Model.Id, formType = "EditContact" })
+                @{
+                    var formViewModel = new Reservations.Models.NewPersonViewModel
+                    {
+                        FirstName = Model.FirstName,
+                        MiddleName = Model.MiddleName,
+                        LastName = Model.LastName,
+                        Email = Model.Email,
+                        PhoneNumber = Model.PhoneNumber
+                    };
+                }
+                @await Html.PartialAsync(
+                    "_UserForm", 
+                    formViewModel,
+                    new ViewDataDictionary(ViewData) { { "FormType", "EditContact" } }
+                )
             </div>
         </div>
     </div>

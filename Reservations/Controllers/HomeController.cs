@@ -7,9 +7,25 @@ namespace Reservations.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IContactsService _contactsService;
+
+        public HomeController(IContactsService contactsService)
+        {
+            _contactsService = contactsService;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            try
+            {
+                var data = _contactsService.GetAllContacts();
+                return View(data);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Could not load contacts: " + ex.Message;
+                return View(new List<Reservations.Models.Person>());
+            }
         }
 
         public IActionResult Privacy()
