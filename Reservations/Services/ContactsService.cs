@@ -12,24 +12,24 @@ namespace Reservations.Services
             _contactsRepository = contactsRepository;
         }
 
-        public IEnumerable<Person> GetAllContacts()
+        public async Task<IEnumerable<Person>> GetAllContactsAsync()
         {
-            return _contactsRepository.GetAll();
+            return await _contactsRepository.GetAllAsync();
         }
 
-        public Person GetContactById(int id)
+        public async Task<Person> GetContactByIdAsync(int id)
         {
-            return _contactsRepository.GetContactById(id);
+            return await _contactsRepository.GetContactByIdAsync(id);
         }
 
-        public void AddPerson(Person newPerson)
+        public async Task AddPersonAsync(Person newPerson)
         {
-            _contactsRepository.AddPerson(newPerson);
+            await _contactsRepository.AddPersonAsync(newPerson);
         }
 
-        public void EditContact(Person editedPerson)
+        public async Task EditContactAync(Person editedPerson)
         {
-            _contactsRepository.EditContact(editedPerson);
+            await _contactsRepository.EditContactAsync(editedPerson);
         }
     }
 }

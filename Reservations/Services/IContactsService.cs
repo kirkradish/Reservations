@@ -4,12 +4,12 @@ namespace Reservations.Services
 {
     public interface IContactsService
     {
-        public IEnumerable<Person> GetAllContacts();
+        public Task<IEnumerable<Person>> GetAllContactsAsync();
 
-        public Person GetContactById(int id);
+        public Task<Person> GetContactByIdAsync(int id);
 
-        public void AddPerson(Person person);
+        public Task AddPersonAsync(Person person);
 
-        public void EditContact(Person person);
+        public Task EditContactAync(Person person);
     }
 }

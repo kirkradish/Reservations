@@ -4,12 +4,12 @@ namespace Reservations.Repositories
 {
     public interface IContactsRepository
     {
-        public IEnumerable<Person> GetAll();
+        public Task<IEnumerable<Person>> GetAllAsync();
 
-        public Person GetContactById(int id);
+        public Task<Person> GetContactByIdAsync(int id);
 
-        public void AddPerson(Person person);
+        public Task AddPersonAsync(Person person);
 
-        public void EditContact(Person person);
+        public Task EditContactAsync(Person person);
     }
 }

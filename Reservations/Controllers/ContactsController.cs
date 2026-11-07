@@ -13,11 +13,11 @@ namespace Reservations.Controllers
             _contactsService = contactsService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             try
             {
-                var data = _contactsService.GetAllContacts();
+                var data = await _contactsService.GetAllContactsAsync();
                 return View(data);
             }
             catch (Exception ex)
@@ -27,19 +27,18 @@ namespace Reservations.Controllers
             }
         }
 
-        public IActionResult View(int id)
+        public async Task<IActionResult> View(int id)
         {
-            Person idPerson = _contactsService.GetContactById(id);
+            Person idPerson = await _contactsService.GetContactByIdAsync(id);
 
             return View(idPerson);
         }
 
         [HttpPost]
-        public IActionResult EditContact(NewPersonViewModel editedModel)
+        public async Task<IActionResult> EditContact(NewPersonViewModel editedModel)
         {
             Person domainPerson = new Person
             {
-
                 Id = Convert.ToInt32(editedModel.Id),
                 FirstName = editedModel.FirstName,
                 MiddleName = editedModel.MiddleName,
@@ -48,7 +47,7 @@ namespace Reservations.Controllers
                 PhoneNumber = editedModel.PhoneNumber
             };
 
-            _contactsService.EditContact(domainPerson);
+            await _contactsService.EditContactAync(domainPerson);
 
             return RedirectToAction("Index", new { id = domainPerson.Id });
         }
@@ -59,11 +58,11 @@ namespace Reservations.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddContact(Person newPerson)
+        public async Task<IActionResult> AddContact(Person newPerson)
         {
             if (ModelState.IsValid)
             {
-                _contactsService.AddPerson(newPerson);
+                await _contactsService.AddPersonAsync(newPerson);
                 return RedirectToAction("Index");
             }
 
