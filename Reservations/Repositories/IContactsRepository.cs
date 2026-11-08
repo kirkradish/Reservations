@@ -8,9 +8,9 @@ namespace Reservations.Repositories
 
         public Task<Person> GetContactByIdAsync(int id);
 
-        public Task AddPersonAsync(Person person);
+        public Task AddPersonAsync(NewPersonViewModel person);
 
-        public Task EditContactAsync(Person person);
+        public Task EditContactAsync(NewPersonViewModel person);
 
         public Task DeleteContactAsync(int id);
     }

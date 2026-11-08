@@ -6,15 +6,15 @@ namespace Reservations.Models
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "First name is required")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "First name is required")]
         public string FirstName { get; set; } = string.Empty;
 
         public string MiddleName { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Last name is required")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Last name is required")]
         public string LastName { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Email name is required")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Email name is required")]
         public string Email { get; set; } = string.Empty;
 
         public string PhoneNumber { get; set; } = string.Empty;

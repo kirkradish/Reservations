@@ -60,7 +60,7 @@ namespace Reservations.Repositories
             return contacts;
         }
 
-        public async Task AddPersonAsync(Person newPerson)
+        public async Task AddPersonAsync(NewPersonViewModel newPerson)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -142,7 +142,7 @@ namespace Reservations.Repositories
             };
         }
 
-        public async Task EditContactAsync(Person person)
+        public async Task EditContactAsync(NewPersonViewModel person)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
