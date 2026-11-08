@@ -3,7 +3,7 @@
 *@
 @{
 }
-@model Reservations.Models.Person;
+@model Reservations.Models.NewPersonViewModel;
 
 <div class="text-center">
     <h1>View Contact</h1>
@@ -50,3 +50,14 @@
         </div>
     </div>
 </div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+@if (!ViewData.ModelState.IsValid)
+{
+    <script>
+        console.log("hello");
+        $(document).ready(function () {
+            $('#contactDetailsModal').modal('show');
+        });
+    </script>
+}

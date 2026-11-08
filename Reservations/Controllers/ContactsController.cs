@@ -31,25 +31,44 @@ namespace Reservations.Controllers
         {
             Person idPerson = await _contactsService.GetContactByIdAsync(id);
 
-            return View(idPerson);
+            var validPerson = new NewPersonViewModel
+            {
+                Id = idPerson.Id ?? 0,
+                FirstName = idPerson.FirstName,
+                MiddleName = idPerson.MiddleName,
+                LastName = idPerson.LastName,
+                Email = idPerson.Email,
+                PhoneNumber = idPerson.PhoneNumber
+            };
+
+            return View(validPerson);
         }
 
         [HttpPost]
         public async Task<IActionResult> EditContact(NewPersonViewModel editedModel)
         {
-            Person domainPerson = new Person
+            if (!ModelState.IsValid)
             {
-                Id = Convert.ToInt32(editedModel.Id),
-                FirstName = editedModel.FirstName,
-                MiddleName = editedModel.MiddleName,
-                LastName = editedModel.LastName,
-                Email = editedModel.Email,
-                PhoneNumber = editedModel.PhoneNumber
-            };
+                return View("View", editedModel);
+            }
 
-            await _contactsService.EditContactAync(domainPerson);
+            await _contactsService.EditContactAync(editedModel);
 
-            return RedirectToAction("Index", new { id = domainPerson.Id });
+            return RedirectToAction("Index", new { id = editedModel.Id });
+
+            //Person domainPerson = new Person
+            //{
+            //    Id = Convert.ToInt32(editedModel.Id),
+            //    FirstName = editedModel.FirstName,
+            //    MiddleName = editedModel.MiddleName,
+            //    LastName = editedModel.LastName,
+            //    Email = editedModel.Email,
+            //    PhoneNumber = editedModel.PhoneNumber
+            //};
+
+            //await _contactsService.EditContactAync(domainPerson);
+
+            //return RedirectToAction("Index", new { id = domainPerson.Id });
         }
 
         public IActionResult Add()
@@ -58,12 +77,15 @@ namespace Reservations.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddContact(Person newPerson)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddContact(NewPersonViewModel newPerson)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                await _contactsService.AddPersonAsync(newPerson);
+                return View("Add", newPerson);
             }
+
+            await _contactsService.AddPersonAsync(newPerson);
 
             return RedirectToAction("Index");
         }

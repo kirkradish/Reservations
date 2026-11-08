@@ -22,12 +22,12 @@ namespace Reservations.Services
             return await _contactsRepository.GetContactByIdAsync(id);
         }
 
-        public async Task AddPersonAsync(Person newPerson)
+        public async Task AddPersonAsync(NewPersonViewModel newPerson)
         {
             await _contactsRepository.AddPersonAsync(newPerson);
         }
 
-        public async Task EditContactAync(Person editedPerson)
+        public async Task EditContactAync(NewPersonViewModel editedPerson)
         {
             await _contactsRepository.EditContactAsync(editedPerson);
         }

@@ -27,7 +27,6 @@
     <div>
         <label asp-for="MiddleName">Middle Name</label>
         <input asp-for="MiddleName" class="form-control" />
-        <span asp-validation-for="MiddleName" class="text-danger"></span>
     </div>
 
     <div>
@@ -45,8 +44,10 @@
     <div>
         <label asp-for="PhoneNumber">Phone Number</label>
         <input asp-for="PhoneNumber" class="form-control" />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
     </div>
 
     <button type="submit" class="submit-button btn btn-success">@buttonText</button>
 </form>
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
