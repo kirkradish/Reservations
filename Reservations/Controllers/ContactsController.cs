@@ -7,18 +7,24 @@ namespace Reservations.Controllers
     public class ContactsController : Controller
     {
         private readonly IContactsService _contactsService;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public ContactsController(IContactsService contactsService)
+        public ContactsController(IContactsService contactsService, IHttpClientFactory httpClientFactory)
         {
             _contactsService = contactsService;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task<IActionResult> Index()
         {
             try
             {
-                var data = await _contactsService.GetAllContactsAsync();
-                return View(data);
+                var client = _httpClientFactory.CreateClient("ContactsApi");
+                var contacts = await client.GetFromJsonAsync<List<Person>>(
+                    "api/contacts"
+                );
+
+                return View(contacts);
             }
             catch (Exception ex)
             {
