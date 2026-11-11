@@ -16,6 +16,12 @@ builder.Services.AddScoped<IContactsRepository, ContactsRepository>();
 builder.Services.AddScoped<IContactsService, ContactsService>();
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient("ContactsApi", client =>
+{
+    client.BaseAddress = new Uri(
+        builder.Configuration["ApiSettings:BaseUrl"]!
+    );
+});
 
 var app = builder.Build();
 
