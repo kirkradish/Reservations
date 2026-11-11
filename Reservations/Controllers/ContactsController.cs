@@ -8,11 +8,16 @@ namespace Reservations.Controllers
     {
         private readonly IContactsService _contactsService;
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ILogger<ContactsController> _logger;
 
-        public ContactsController(IContactsService contactsService, IHttpClientFactory httpClientFactory)
+        public ContactsController(
+            IContactsService contactsService, 
+            IHttpClientFactory httpClientFactory,
+            ILogger<ContactsController> logger)
         {
             _contactsService = contactsService;
             _httpClientFactory = httpClientFactory;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index()
@@ -24,57 +29,70 @@ namespace Reservations.Controllers
                     "api/contacts"
                 );
 
+                if (contacts == null)
+                    return NotFound();
+
                 return View(contacts);
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
-                ViewBag.ErrorMessage = "Could not load contacts: " + ex.Message;
-                return View(new List<Reservations.Models.Person>());
+                _logger.LogError(ex, "Error communicating with Contacts API");
+                return StatusCode(503, "Unable to retrieve contacts.");
+            }
+            catch (TaskCanceledException ex)
+            {
+                _logger.LogError(ex, "Contacts API request timed out");
+                return StatusCode(504, "The API request timed out.");
             }
         }
 
-        public async Task<IActionResult> View(int id)
+        public async Task<IActionResult> Profile(int id)
         {
-            Person idPerson = await _contactsService.GetContactByIdAsync(id);
+            var client = _httpClientFactory.CreateClient("ContactsApi");
+            var contact = await client.GetFromJsonAsync<NewPersonViewModel>(
+                $"api/contacts/{id}");
 
-            var validPerson = new NewPersonViewModel
-            {
-                Id = idPerson.Id ?? 0,
-                FirstName = idPerson.FirstName,
-                MiddleName = idPerson.MiddleName,
-                LastName = idPerson.LastName,
-                Email = idPerson.Email,
-                PhoneNumber = idPerson.PhoneNumber
-            };
+            if (contact == null)
+                return NotFound();
 
-            return View(validPerson);
+            return View(contact);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditContact(NewPersonViewModel editedModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return View("View", editedModel);
-            }
+            var client = _httpClientFactory.CreateClient("ContactsApi");
 
-            await _contactsService.EditContactAync(editedModel);
+            var response = await client.PutAsJsonAsync(
+                $"api/contacts/{editedModel.Id}", editedModel);
 
-            return RedirectToAction("Index", new { id = editedModel.Id });
+            if (response.IsSuccessStatusCode)
+                return RedirectToAction("Profile", new { id = editedModel.Id });
 
-            //Person domainPerson = new Person
-            //{
-            //    Id = Convert.ToInt32(editedModel.Id),
-            //    FirstName = editedModel.FirstName,
-            //    MiddleName = editedModel.MiddleName,
-            //    LastName = editedModel.LastName,
-            //    Email = editedModel.Email,
-            //    PhoneNumber = editedModel.PhoneNumber
-            //};
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return NotFound();
 
-            //await _contactsService.EditContactAync(domainPerson);
+            ModelState.AddModelError("", "Unable to update contacts.");
 
-            //return RedirectToAction("Index", new { id = domainPerson.Id });
+            return View(editedModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteContact(int id)
+        {
+            var client = _httpClientFactory.CreateClient("ContactsApi");
+
+            var response = await client.DeleteAsync($"api/contacts/{id}");
+
+            if (response.IsSuccessStatusCode)
+                return Ok();
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return NotFound();
+
+            return StatusCode((int)response.StatusCode);
         }
 
         public IActionResult Add()
@@ -84,26 +102,13 @@ namespace Reservations.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddContact(NewPersonViewModel newPerson)
+        public async Task<IActionResult> AddContact(NewPersonViewModel newContact)
         {
             if (!ModelState.IsValid)
-            {
-                return View("Add", newPerson);
-            }
+                return View(newContact);
 
-            await _contactsService.AddPersonAsync(newPerson);
+            await _contactsService.AddPersonAsync(newContact);
 
-            return RedirectToAction("Index");
-        }
-
-        public async Task<IActionResult> DeleteContact(int id)
-        {
-            if (id <= 0)
-            {
-                return BadRequest("A valid contact ID must be provided.");
-            }
-
-            await _contactsService.DeleteContactAsync(id);
             return RedirectToAction("Index");
         }
     }

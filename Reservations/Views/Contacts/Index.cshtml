@@ -5,6 +5,7 @@
     
 }
 @model List<Reservations.Models.Person>
+@Html.AntiForgeryToken()
 
 @section Styles {
     <link href="https://cdn.datatables.net/v/dt/dt-3.1.4/datatables.min.css" rel="stylesheet">
@@ -29,13 +30,14 @@
             @foreach (var person in Model)
             {
                 <tr>
-                    <td><a asp-controller="Contacts" asp-action="View" asp-route-id="@person.Id">View</a></td>
+                    <td><a asp-controller="Contacts" asp-action="Profile" asp-route-id="@person.Id">View</a></td>
                     <td>@person.FirstName</td>
                     <td>@person.MiddleName</td>
                     <td>@person.LastName</td>
                     <td>@person.Email</td>
                     <td>@person.PhoneNumber</td>
-                    <td><a asp-controller="Contacts" asp-action="DeleteContact" asp-route-id="@person.Id">Delete</a></td>
+                    @* <td><a asp-controller="Contacts" asp-action="DeleteContact" asp-route-id="@person.Id">Delete</a></td> *@
+                    <td><a href="#" onclick="deleteContact(@person.Id); return false;">Delete</a></td>
                 </tr>
             }
         </tbody>
@@ -55,5 +57,36 @@
                 "pageLength": 10 // Default row display limit
             });
         });
+
+        // Implemet Delete Functionality
+        async function deleteContact(id) {
+            if (!confirm("Are you sure you wan to delete this contact?")) {
+                return;
+            }
+
+            const token = document.querySelector(
+                'input[name="__RequestVerificationToken"]'
+            ).value;
+
+            try {
+                const response = await fetch(
+                    `/Contacts/DeleteContact/${id}`, {
+                    method: "POST",
+                        headers: {
+                            "RequestVerificationToken": token
+                        }
+                });
+
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert("Unable to delete contact.");
+                }
+            }
+            catch (error) {
+                console.error("Delete error:", error);
+                alert("An error occurred while deleting the contact.");
+            }
+        }
     </script>
 }
