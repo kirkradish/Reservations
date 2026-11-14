@@ -7,11 +7,11 @@ namespace Reservations.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IContactsService _contactsService;
+        private readonly IUsersService _usersService;
 
-        public HomeController(IContactsService contactsService)
+        public HomeController(IUsersService usersService)
         {
-            _contactsService = contactsService;
+            _usersService = usersService;
         }
 
         public IActionResult Index()

@@ -1,9 +1,9 @@
 ﻿@model Reservations.Models.NewPersonViewModel
 
 @{
-    string mode = ViewData["FormType"]?.ToString() ?? "AddContact";
-    string targetAction = (mode == "AddContact") ? "AddContact" : "EditContact";
-    string buttonText = (mode == "AddContact") ? "Add Contact" : "Edit Contact";
+    string mode = ViewData["FormType"]?.ToString() ?? "AddUser";
+    string targetAction = (mode == "AddUser") ? "AddUser" : "EditUser";
+    string buttonText = (mode == "AddUser") ? "Add User" : "Edit User";
 }
 
 
@@ -14,7 +14,7 @@
 </style>
 
 
-<form method="post" asp-controller="Contacts" asp-action="@targetAction">
+<form method="post" asp-controller="Users" asp-action="@targetAction">
     @Html.AntiForgeryToken()
 
     <div>
