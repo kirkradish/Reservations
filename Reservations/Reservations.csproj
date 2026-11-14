@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Views\ContactsList\**" />
-    <Content Remove="Views\ContactsList\**" />
-    <EmbeddedResource Remove="Views\ContactsList\**" />
-    <None Remove="Views\ContactsList\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="7.1.1" />
   </ItemGroup>
 

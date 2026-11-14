@@ -4,18 +4,18 @@ using Reservations.Services;
 
 namespace Reservations.Controllers
 {
-    public class ContactsController : Controller
+    public class UsersController : Controller
     {
-        private readonly IContactsService _contactsService;
+        private readonly IUsersService _usersService;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ILogger<ContactsController> _logger;
+        private readonly ILogger<UsersController> _logger;
 
-        public ContactsController(
-            IContactsService contactsService, 
+        public UsersController(
+            IUsersService usersService, 
             IHttpClientFactory httpClientFactory,
-            ILogger<ContactsController> logger)
+            ILogger<UsersController> logger)
         {
-            _contactsService = contactsService;
+            _usersService = usersService;
             _httpClientFactory = httpClientFactory;
             _logger = logger;
         }
@@ -24,48 +24,48 @@ namespace Reservations.Controllers
         {
             try
             {
-                var client = _httpClientFactory.CreateClient("ContactsApi");
-                var contacts = await client.GetFromJsonAsync<List<Person>>(
-                    "api/contacts"
+                var client = _httpClientFactory.CreateClient("UsersApi");
+                var users = await client.GetFromJsonAsync<List<Person>>(
+                    "api/users"
                 );
 
-                if (contacts == null)
+                if (users == null)
                     return NotFound();
 
-                return View(contacts);
+                return View(users);
             }
             catch (HttpRequestException ex)
             {
-                _logger.LogError(ex, "Error communicating with Contacts API");
-                return StatusCode(503, "Unable to retrieve contacts.");
+                _logger.LogError(ex, "Error communicating with Users API");
+                return StatusCode(503, "Unable to retrieve Users.");
             }
             catch (TaskCanceledException ex)
             {
-                _logger.LogError(ex, "Contacts API request timed out");
+                _logger.LogError(ex, "Users API request timed out");
                 return StatusCode(504, "The API request timed out.");
             }
         }
 
         public async Task<IActionResult> Profile(int id)
         {
-            var client = _httpClientFactory.CreateClient("ContactsApi");
-            var contact = await client.GetFromJsonAsync<NewPersonViewModel>(
-                $"api/contacts/{id}");
+            var client = _httpClientFactory.CreateClient("UsersApi");
+            var user = await client.GetFromJsonAsync<NewPersonViewModel>(
+                $"api/users/{id}");
 
-            if (contact == null)
+            if (user == null)
                 return NotFound();
 
-            return View(contact);
+            return View(user);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditContact(NewPersonViewModel editedModel)
+        public async Task<IActionResult> EditUser(NewPersonViewModel editedModel)
         {
-            var client = _httpClientFactory.CreateClient("ContactsApi");
+            var client = _httpClientFactory.CreateClient("UsersApi");
 
             var response = await client.PutAsJsonAsync(
-                $"api/contacts/{editedModel.Id}", editedModel);
+                $"api/users/{editedModel.Id}", editedModel);
 
             if (response.IsSuccessStatusCode)
                 return RedirectToAction("Profile", new { id = editedModel.Id });
@@ -73,18 +73,18 @@ namespace Reservations.Controllers
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 return NotFound();
 
-            ModelState.AddModelError("", "Unable to update contacts.");
+            ModelState.AddModelError("", "Unable to update user.");
 
             return View(editedModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteContact(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            var client = _httpClientFactory.CreateClient("ContactsApi");
+            var client = _httpClientFactory.CreateClient("UsersApi");
 
-            var response = await client.DeleteAsync($"api/contacts/{id}");
+            var response = await client.DeleteAsync($"api/users/{id}");
 
             if (response.IsSuccessStatusCode)
                 return Ok();
@@ -102,12 +102,12 @@ namespace Reservations.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddContact(NewPersonViewModel newContact)
+        public async Task<IActionResult> AddUser(NewPersonViewModel newUser)
         {
             if (!ModelState.IsValid)
-                return View(newContact);
+                return View(newUser);
 
-            await _contactsService.AddPersonAsync(newContact);
+            await _usersService.AddUserAsync(newUser);
 
             return RedirectToAction("Index");
         }

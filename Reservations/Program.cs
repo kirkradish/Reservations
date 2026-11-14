@@ -12,11 +12,11 @@ string connectionString = builder.Configuration.GetConnectionString("DefaultConn
 builder.Services.AddTransient<SqlConnection>(_ => new SqlConnection(connectionString));
 
 builder.Services.AddSingleton(connectionString);
-builder.Services.AddScoped<IContactsRepository, ContactsRepository>();
-builder.Services.AddScoped<IContactsService, ContactsService>();
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<IUsersService, UsersService>();
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddHttpClient("ContactsApi", client =>
+builder.Services.AddHttpClient("UsersApi", client =>
 {
     client.BaseAddress = new Uri(
         builder.Configuration["ApiSettings:BaseUrl"]!

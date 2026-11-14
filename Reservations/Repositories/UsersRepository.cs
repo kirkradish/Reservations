@@ -6,22 +6,22 @@ using System.Reflection.PortableExecutable;
 
 namespace Reservations.Repositories
 {
-    public class ContactsRepository : IContactsRepository
+    public class UsersRepository : IUsersRepository
     {
         private readonly string _connectionString;
 
-        public ContactsRepository(IConfiguration configuration)
+        public UsersRepository(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
-        public async Task<IEnumerable<Person>> GetAllAsync()
+        public async Task<IEnumerable<Person>> GetAllUsersAsync()
         {
-            var contacts = new List<Person>();
+            var users = new List<Person>();
 
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var command = new SqlCommand("sp_get_all_contacts", connection))
+                using (var command = new SqlCommand("sp_get_all_users", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -31,7 +31,7 @@ namespace Reservations.Repositories
                     {
                         while (await reader.ReadAsync())
                         {
-                            contacts.Add(new Person
+                            users.Add(new Person
                             {
                                 Id = await reader.IsDBNullAsync(reader.GetOrdinal("user_id"))
                                     ? null
@@ -57,14 +57,14 @@ namespace Reservations.Repositories
                 }
             }
 
-            return contacts;
+            return users;
         }
 
-        public async Task AddPersonAsync(NewPersonViewModel newPerson)
+        public async Task AddUserAsync(NewPersonViewModel newPerson)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var command = new SqlCommand("sp_add_contact", connection))
+                using (var command = new SqlCommand("sp_add_user", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     
@@ -89,11 +89,11 @@ namespace Reservations.Repositories
             }
         }
 
-        public async Task<Person> GetContactByIdAsync(int id)
+        public async Task<Person> GetUserByIdAsync(int id)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var command = new SqlCommand("sp_get_contact_by_id", connection))
+                using (var command = new SqlCommand("sp_get_user_by_id", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -142,11 +142,11 @@ namespace Reservations.Repositories
             };
         }
 
-        public async Task EditContactAsync(NewPersonViewModel person)
+        public async Task EditUserAsync(NewPersonViewModel person)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var command = new SqlCommand("sp_edit_contact", connection))
+                using (var command = new SqlCommand("sp_edit_user", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -171,11 +171,11 @@ namespace Reservations.Repositories
             }
         }
 
-        public async Task DeleteContactAsync(int id)
+        public async Task DeleteUserAsync(int id)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var command = new SqlCommand("sp_soft_delete_contact", connection))
+                using (var command = new SqlCommand("sp_soft_delete_user", connection))
                 {
                     try
                     {
